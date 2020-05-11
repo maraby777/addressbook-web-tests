@@ -53,6 +53,7 @@ namespace addressbook_web_tests
             contact.Home = "home";
             contact.Mobile = "111222333";
             contact.Email = "test@test.com";
+            contact.Nickname = "nickname";
 
             FillContactForm(contact);
             SubmitNewContact();
