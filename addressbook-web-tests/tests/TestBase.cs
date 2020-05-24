@@ -13,12 +13,19 @@ namespace addressbook_web_tests
         [SetUp]
         public void SetupTest()
         {
+            //init app manager
             app = new ApplicationManager();
+
+            //login to address book
+            app.Navigator.OpenHomePage();
+            app.Auth.Login(new AccountData("admin", "secret"));
         }
 
         [TearDown]
         public void TeardownTest()
         {
+            app.Auth.Logout();
+
             app.Stop();
         }
 

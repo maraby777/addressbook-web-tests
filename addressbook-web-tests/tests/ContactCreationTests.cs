@@ -15,10 +15,6 @@ namespace addressbook_web_tests
     [Test]
     public void ContactCreationTest()
         {
-            app.Navigator.OpenHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
-            app.ContactHelper.AddNewContact();
-
             ContactData contact = new ContactData("first_name");
             contact.FirstName = "firstname";
             contact.Middlename = "middlename";
@@ -28,10 +24,24 @@ namespace addressbook_web_tests
             contact.Email = "test@test.com";
             contact.Nickname = "nickname";
 
-            app.ContactHelper.FillContactForm(contact);
-            app.ContactHelper.SubmitNewContact();
-            app.Navigator.GoToHomePage();
-            app.Auth.Logout();
-        } 
+            app.ContactHelper.Create(contact);
+        }
+
+
+        [Test]
+        public void EmptyContactCreationTest()
+        {
+            ContactData contact = new ContactData("");
+            contact.FirstName = "";
+            contact.Middlename = "";
+            contact.Lastname = "";
+            contact.Home = "";
+            contact.Mobile = "";
+            contact.Email = "";
+            contact.Nickname = "nickname";
+
+            app.ContactHelper.Create(contact);
+        }
     }
 }
+

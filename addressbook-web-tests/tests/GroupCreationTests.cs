@@ -12,21 +12,23 @@ namespace addressbook_web_tests
         [Test]
         public void GroupCreationTest()
         {
-            app.Navigator.OpenHomePage();
-            app.Auth.Login(new AccountData("admin", "secret"));
-            app.Navigator.GoToGroupPage();
-            app.GroupHelper.InitGroupCreation();
-
             GroupData group = new GroupData("name_");
             group.Header = "Header_";
             group.Footer = "Footer_";
-            app.GroupHelper.FillGroupForm(group);
-            //alternatiwa
-            //FillGroupForm(new GroupData("name_", "aaa", "bbb"));//, "header_", "footer_") ;
+      
+            app.GroupHelper.Create(group);
+           
+            
+        }
 
-            app.GroupHelper.SubmitGroupCreation();
-            app.Navigator.GoToGroupPage();
-            app.Auth.Logout();
+        [Test]
+        public void EmptyGroupCreationTest()
+        {
+            GroupData group = new GroupData("");
+            group.Header = "";
+            group.Footer = "";
+
+            app.GroupHelper.Create(group);
         }
     }
 }
