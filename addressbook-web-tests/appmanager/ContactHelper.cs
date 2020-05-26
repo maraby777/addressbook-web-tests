@@ -30,6 +30,8 @@ namespace addressbook_web_tests
         public ContactHelper Remove(int v)
         {
             manager.Navigator.GoToHomePage();
+
+            ContactPrepare();
             SelectContact(v);
             RemoveContact();
             return this;
@@ -38,12 +40,31 @@ namespace addressbook_web_tests
         public ContactHelper Modify(int v, ContactData newData)
         {
             manager.Navigator.GoToHomePage();
+
+            ContactPrepare();
             SelectContact(v);
             EditContact();
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.GoToHomePage();
             return this;
+        }
+
+        public void ContactPrepare()
+        {
+            if (IsContactPresent() != true)
+            {
+                ContactData contact = new ContactData("IsContactPresent_first_name");
+                contact.FirstName = "IsContactPresent_firstname";
+                contact.Middlename = "IsContactPresent_middlename";
+                contact.Lastname = "IsContactPresent_lastname";
+                contact.Home = "IsContactPresent_home";
+                contact.Mobile = "IsContactPresent_111222333";
+                contact.Email = "IsContactPresent_test@test.com";
+                contact.Nickname = "IsContactPresent_nickname";
+
+                Create(contact);
+            }
         }
 
         public ContactHelper RemoveContact()
@@ -56,9 +77,12 @@ namespace addressbook_web_tests
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("//tr[" + index + "]/td/input")).Click();
+
+            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td")).Click();
+            
             return this;
         }
+
 
         public ContactHelper SubmitNewContact()
         {
@@ -74,24 +98,13 @@ namespace addressbook_web_tests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Click();
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.FirstName);
-            driver.FindElement(By.Name("middlename")).Clear();
-            driver.FindElement(By.Name("middlename")).SendKeys(contact.Middlename);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
-            driver.FindElement(By.Name("nickname")).Clear();
-            driver.FindElement(By.Name("nickname")).SendKeys(contact.Nickname);
-            driver.FindElement(By.Name("home")).Click();
-            driver.FindElement(By.Name("home")).Clear();
-            driver.FindElement(By.Name("home")).SendKeys(contact.Home);
-            driver.FindElement(By.Name("mobile")).Click();
-            driver.FindElement(By.Name("mobile")).Clear();
-            driver.FindElement(By.Name("mobile")).SendKeys(contact.Mobile);
-            driver.FindElement(By.Name("email")).Click();
-            driver.FindElement(By.Name("email")).Clear();
-            driver.FindElement(By.Name("email")).SendKeys(contact.Email);
+            Type(By.Name("firstname"), contact.FirstName);
+            Type(By.Name("middlename"), contact.Middlename);
+            Type(By.Name("lastname"), contact.Lastname);
+            Type(By.Name("nickname"), contact.Nickname);
+            Type(By.Name("home"), contact.Home);
+            Type(By.Name("mobile"), contact.Mobile);
+            Type(By.Name("email"), contact.Email);
             return this;
         }
 
@@ -126,8 +139,14 @@ namespace addressbook_web_tests
 
         private ContactHelper EditContact()
         {
-            driver.FindElement(By.XPath("(//img[@alt='Edit'])[2]")).Click();
+            driver.FindElement(By.XPath("//td[8]/a/img")).Click();
+            //driver.FindElement(By.XPath("(//img[@alt='Edit'])[2]")).Click();
             return this;
+        }
+
+        private bool IsContactPresent()
+        {
+            return IsElementPresent(By.Name("selected[]"));
         }
     }
 }

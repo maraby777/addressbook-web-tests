@@ -4,10 +4,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using NUnit.Framework;
 
-namespace addressbook_web_tests
+namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class GroupRemovalTests : TestBase
+    public class GroupRemovalTests : AuthTestBase
     {
 
     [Test]
