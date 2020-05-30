@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -43,7 +45,7 @@ namespace addressbook_web_tests
 
             ContactPrepare();
             SelectContact(v);
-            EditContact();
+            //EditContact();
             FillContactForm(newData);
             SubmitContactModification();
             manager.Navigator.GoToHomePage();
@@ -71,6 +73,7 @@ namespace addressbook_web_tests
         {
             acceptNextAlert = true;
             driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            contactCache = null;
             Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
         }
@@ -78,8 +81,8 @@ namespace addressbook_web_tests
         public ContactHelper SelectContact(int index)
         {
 
-            driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td")).Click();
-            
+            //driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr[" + index + "]/td")).Click();
+            driver.FindElement(By.XPath("(//img[@alt='Edit'])[" + index + 1 + "]")).Click();
             return this;
         }
 
@@ -87,6 +90,7 @@ namespace addressbook_web_tests
         public ContactHelper SubmitNewContact()
         {
             driver.FindElement(By.XPath("(//input[@name='submit'])[2]")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -134,6 +138,7 @@ namespace addressbook_web_tests
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -147,6 +152,27 @@ namespace addressbook_web_tests
         private bool IsContactPresent()
         {
             return IsElementPresent(By.Name("selected[]"));
+        }
+        private List<ContactData> contactCache = null;
+
+        public List<ContactData> GetContactList()
+        {
+            if (contactCache == null)
+            {
+                contactCache = new List<ContactData>();
+
+                manager.Navigator.GoToHomePage();
+
+                ICollection<IWebElement> elements = driver.FindElements(By.Name("entry"));
+                foreach (IWebElement element in elements)
+                {
+                    IList<IWebElement> cells = element.FindElements(By.TagName("td"));
+                    contactCache.Add(new ContactData(cells[1].Text, cells[2].Text));
+                }
+            }
+            return new List<ContactData>(contactCache);
+
+
         }
     }
 }

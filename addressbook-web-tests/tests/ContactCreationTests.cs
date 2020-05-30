@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -24,7 +25,16 @@ namespace addressbook_web_tests.tests
             contact.Email = "test@test.com";
             contact.Nickname = "nickname";
 
+            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+
             app.ContactHelper.Create(contact);
+
+            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            newContacts.Sort();
+
+            Assert.AreEqual(oldContacts.Count, newContacts.Count);
         }
 
 
@@ -40,7 +50,15 @@ namespace addressbook_web_tests.tests
             contact.Email = "";
             contact.Nickname = "nickname";
 
+            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+
             app.ContactHelper.Create(contact);
+
+            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            oldContacts.Add(contact);
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts.Count, newContacts.Count);
         }
     }
 }

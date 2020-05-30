@@ -2,55 +2,58 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace addressbook_web_tests
 {
-    public class GroupData
+    public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
         private string name;
-        private string header = "";
-        private string footer = "";
 
         public GroupData(string name)
         {
-            this.name = name;
+            Name = name;
         }
 
-        public string Name 
+        public string Name { get; set; }
+        
+        public string Header { get; set; }
+        
+        public string Footer { get; set; }
+        
+        public string Id { get; set; }
+
+        public bool Equals(GroupData other)
         {
-            get
+            if (Object.ReferenceEquals(other, null))
             {
-                return name;
+                return false;
             }
-            set
+            if (Object.ReferenceEquals(this, other))
             {
-                name = value;
+                return true;
             }
+            return Name == other.Name;
         }
 
-        public string Header
+        public int CompareTo(GroupData other)
         {
-            get
-            { 
-                return header; 
-            }
-            set
+            if (Object.ReferenceEquals(other, null))
             {
-                header = value;
+                return 1;
             }
+            return Name.CompareTo(other.Name);
         }
 
-        public string Footer
+        public override int GetHashCode()
         {
-            get
-            {
-                return footer;
-            }
-            set
-            {
-                footer = value;
-            }
+            return Name.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "name " + Name;
         }
 
     }

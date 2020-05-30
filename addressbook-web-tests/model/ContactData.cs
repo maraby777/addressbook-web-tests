@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace addressbook_web_tests
 {
-    public class ContactData
+    public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
 
         private string firstname;
@@ -21,6 +21,12 @@ namespace addressbook_web_tests
         public ContactData(string firstname)
         {
             this.firstname = firstname;
+        }
+
+        public ContactData(string firstname, string lastname)
+        {
+            this.firstname = firstname;
+            this.lastname = lastname;
         }
 
         public string FirstName
@@ -105,6 +111,47 @@ namespace addressbook_web_tests
             {
                 email = value;
             }
+        }
+
+        public bool Equals(ContactData other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            if (Object.ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return (FirstName == other.FirstName 
+                && Lastname == other.Lastname);
+        }
+
+        public int CompareTo(ContactData other)
+        {
+            if (Object.ReferenceEquals(other, null))
+            {
+                return 1;
+            }
+
+            int compareResult = Lastname.CompareTo(other.Lastname);
+
+            if (compareResult == 0)
+            {
+                return Lastname.CompareTo(other.Lastname);
+            }
+
+            return compareResult;
+        }
+
+        public override int GetHashCode()
+        {
+            return FirstName.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return " Name = " + FirstName;
         }
     }
 }

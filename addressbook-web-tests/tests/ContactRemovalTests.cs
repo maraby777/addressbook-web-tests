@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using System.Threading;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
@@ -18,7 +17,13 @@ namespace addressbook_web_tests.tests
         [Test]
         public void TheRemoveContactTest()
         {
-            app.ContactHelper.Remove(2);
+            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+
+            app.ContactHelper.Remove(0);
+            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            
+            oldContacts.RemoveAt(0);
+            Assert.AreEqual(oldContacts, newContacts);       
         }
     }
 }

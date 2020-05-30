@@ -22,7 +22,13 @@ namespace addressbook_web_tests.tests
             newData.Email = "test@test.com_modify";
             newData.Nickname = "nickname_modify";
 
-            app.ContactHelper.Modify(2, newData);
+            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+
+            app.ContactHelper.Modify(0, newData);
+
+            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            oldContacts.Sort();
+            newContacts.Sort();
         }
     }
 }
