@@ -14,14 +14,14 @@ namespace addressbook_web_tests.tests
         public void GroupCreationTest()
         {
             GroupData group = new GroupData("name_");
-            group.Header = "Header_";
+            group.Header = "\n Header_";
             group.Footer = "Footer_";
 
             List<GroupData> oldGroups = app.GroupHelper.GetGroupList();
 
             app.GroupHelper.Create(group);
 
-            Assert.AreEqual(oldGroups.Count + 1, app.GroupHelper.GetGroupCount());
+            Assert.AreEqual(oldGroups.Count +1 , app.GroupHelper.GetGroupCount());
 
             List<GroupData> newGroups = app.GroupHelper.GetGroupList();
             oldGroups.Add(group);

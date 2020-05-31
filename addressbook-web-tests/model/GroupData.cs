@@ -9,8 +9,6 @@ namespace addressbook_web_tests
 {
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
-        private string name;
-
         public GroupData(string name)
         {
             Name = name;
@@ -35,6 +33,8 @@ namespace addressbook_web_tests
                 return true;
             }
             return Name == other.Name;
+            //or 
+            //return Name.Equals(other.Name, StringComparison.OrdinalIgnoreCase);
         }
 
         public int CompareTo(GroupData other)

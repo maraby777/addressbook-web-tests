@@ -1,116 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace addressbook_web_tests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
-
-        private string firstname;
-        private string middlename;
-        private string lastname;
-        private string nickname;
-        private string home;
-        private string mobile;
-        private string email;
+        private string allPhone;
 
         public ContactData(string firstname)
         {
-            this.firstname = firstname;
+            FirstName = firstname;
         }
 
         public ContactData(string firstname, string lastname)
         {
-            this.firstname = firstname;
-            this.lastname = lastname;
+            FirstName = firstname;
+            Lastname = lastname;
         }
 
-        public string FirstName
-        {
-            get
-            {
-                return firstname;
-            }
-            set
-            {
-                firstname = value;
-            }
-        }
+        public string FirstName { get; set; }
 
-        public string Middlename
-        {
+        public string Middlename { get; set; }
+
+        public string Lastname { get; set; }
+
+        public string Address { get; set; }
+
+        public string Nickname { get; set; }
+
+        public string HomePhone { get; set; }
+
+        public string MobilePhone { get; set; }
+
+        public string WorkPhone { get; set; }
+
+        public string Email { get; set; }
+
+        public string AllPhone 
+        { 
             get 
             {
-                return middlename;
-            }
-            set
+                if (allPhone != null)
+                {
+                    return allPhone;
+                }
+                else
+                {
+                    return (CleanUp(HomePhone) + CleanUp(MobilePhone) + CleanUp(WorkPhone)).Trim(); ;
+                }
+            } 
+            set 
             {
-                middlename = value;
-            }
+                allPhone = value;
+            } 
         }
 
-        public string Lastname
+        private string CleanUp(string phone)
         {
-            get
+            if (phone == null || phone == "")
             {
-                return lastname;
+                return "";
             }
-            set
-            {
-                lastname = value;
-            }
-        }
-
-        public string Nickname
-        {
-            get
-            {
-                return nickname;
-            }
-            set
-            {
-                nickname = value;
-            }
-        }
-
-        public string Home
-        {
-            get
-            {
-                return home;
-            }
-            set
-            {
-                home = value;
-            }
-        }
-
-        public string Mobile
-        {
-            get
-            {
-                return mobile;
-            }
-            set
-            {
-                mobile = value;
-            }
-        }
-
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                email = value;
-            }
+            return phone.Replace(" ", "")
+                .Replace("-", "")
+                .Replace("(", "")
+                .Replace(")", "") + "\r\n";
         }
 
         public bool Equals(ContactData other)

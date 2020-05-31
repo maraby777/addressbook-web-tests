@@ -17,8 +17,8 @@ namespace addressbook_web_tests.tests
             newData.FirstName = "firstname_modify";
             newData.Middlename = "middlename_modify";
             newData.Lastname = "lastname_modify";
-            newData.Home = "home_modify";
-            newData.Mobile = "111222333_modify";
+            newData.HomePhone = "home_modify";
+            newData.MobilePhone = "111222333_modify";
             newData.Email = "test@test.com_modify";
             newData.Nickname = "nickname_modify";
 

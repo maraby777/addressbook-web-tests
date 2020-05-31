@@ -20,8 +20,8 @@ namespace addressbook_web_tests.tests
             contact.FirstName = "firstname";
             contact.Middlename = "middlename";
             contact.Lastname = "lastname";
-            contact.Home = "home";
-            contact.Mobile = "111222333";
+            contact.HomePhone = "home";
+            contact.MobilePhone = "111222333";
             contact.Email = "test@test.com";
             contact.Nickname = "nickname";
 
@@ -45,8 +45,8 @@ namespace addressbook_web_tests.tests
             contact.FirstName = "";
             contact.Middlename = "";
             contact.Lastname = "";
-            contact.Home = "";
-            contact.Mobile = "";
+            contact.HomePhone = "";
+            contact.MobilePhone = "";
             contact.Email = "";
             contact.Nickname = "nickname";
 
