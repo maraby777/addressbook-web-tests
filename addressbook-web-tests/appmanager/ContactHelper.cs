@@ -31,7 +31,7 @@ namespace addressbook_web_tests
             string address = cells[3].Text;
             string allPhones = cells[5].Text;
 
-            new ContactData(firstName, lastName)
+            return new ContactData(firstName, lastName)
             {
                 Address = address,
                 AllPhone = allPhones
@@ -43,13 +43,13 @@ namespace addressbook_web_tests
             manager.Navigator.GoToHomePage();
             InitContactModification(index);
             string firstName = driver.FindElement(By.Name("firstname")).GetAttribute("value");
-            string lastName = driver.FindElement(By.Name("lasttname")).GetAttribute("value");
+            string lastName = driver.FindElement(By.Name("lastname")).GetAttribute("value");
             string address = driver.FindElement(By.Name("address")).GetAttribute("value");
             string homePhone = driver.FindElement(By.Name("home")).GetAttribute("value");
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
             string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
 
-            new ContactData(firstName, lastName)
+            return new ContactData(firstName, lastName)
             {
                 Address = address,
                 HomePhone = homePhone,
@@ -183,12 +183,12 @@ namespace addressbook_web_tests
             return this;
         }
 
-        private ContactHelper EditContact()
-        {
-            driver.FindElement(By.XPath("//td[8]/a/img")).Click();
-            //driver.FindElement(By.XPath("(//img[@alt='Edit'])[2]")).Click();
-            return this;
-        }
+        //private ContactHelper EditContact()
+        //{
+        //    driver.FindElement(By.XPath("//td[8]/a/img")).Click();
+        //    //driver.FindElement(By.XPath("(//img[@alt='Edit'])[2]")).Click();
+        //    return this;
+        //}
 
         private bool IsContactPresent()
         {
