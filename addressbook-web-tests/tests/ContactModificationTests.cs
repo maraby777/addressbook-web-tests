@@ -20,7 +20,7 @@ namespace addressbook_web_tests.tests
             newData.HomePhone = "home_modify";
             newData.MobilePhone = "111222333_modify";
             newData.Email = "test@test.com_modify";
-            newData.Nickname = "nickname_modify";
+            newData.NickName = "nickname_modify";
 
             List<ContactData> oldContacts = app.ContactHelper.GetContactList();
 

@@ -23,7 +23,7 @@ namespace addressbook_web_tests.tests
             contact.HomePhone = "home";
             contact.MobilePhone = "111222333";
             contact.Email = "test@test.com";
-            contact.Nickname = "nickname";
+            contact.NickName = "nickname";
 
             List<ContactData> oldContacts = app.ContactHelper.GetContactList();
 
@@ -48,7 +48,7 @@ namespace addressbook_web_tests.tests
             contact.HomePhone = "";
             contact.MobilePhone = "";
             contact.Email = "";
-            contact.Nickname = "nickname";
+            contact.NickName = "nickname";
 
             List<ContactData> oldContacts = app.ContactHelper.GetContactList();
 

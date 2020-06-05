@@ -92,8 +92,6 @@ namespace addressbook_web_tests
             return this;
         }
 
-
-
         public GroupHelper SelectGroup(int index)
         {
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
@@ -156,7 +154,6 @@ namespace addressbook_web_tests
             }
             return new List<GroupData>(groupCache);
         }
-
 
         public int GetGroupCount()
         {
