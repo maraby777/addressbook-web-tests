@@ -266,7 +266,12 @@ namespace addressbook_web_tests
 
         public override string ToString()
         {
-            return " Name = " + FirstName;
+            return " FirstName = " + FirstName
+                + "\n Lastname =" + Lastname
+                + "\n Nickname = " + NickName
+                + "\n Address = " + Address
+                + "\n Email = " + Email
+                + "\n Homepage = " + Homepage;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace addressbook_web_tests
 
         public override string ToString()
         {
-            return "name " + Name;
+            return "name=" + Name + "\n header=" + Header + "\n footer=" +Footer;
         }
 
     }
