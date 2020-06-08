@@ -25,7 +25,21 @@ namespace addressbook_web_tests.tests
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < l; i++)
             { 
-                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 223)));
+                builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
+            }
+            return builder.ToString();
+        }
+
+        public static string GenerateRandomInt(int max)
+        {
+            int l = Convert.ToInt32(rnd.NextDouble() * max);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < l; i++)
+            {
+                Random rand = new Random();
+                int number = rand.Next(0, 8); 
+                builder = builder.Append(number.ToString());
+                //builder.Append(Convert.ToChar(32 + Convert.ToInt32(rnd.NextDouble() * 65)));
             }
             return builder.ToString();
         }
