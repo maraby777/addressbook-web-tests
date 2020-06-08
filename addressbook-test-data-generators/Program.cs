@@ -17,15 +17,10 @@ namespace addressbook_test_data_generators
     {
         static void Main(string[] args)
         {
-            //string typeData = args[0];
-            //int count = Convert.ToInt32(args[1]);
-            //string filename = args[2]; //contact.xxx or group.xxx
-            //string format = args[3];
-
-            string typeData = "contact";
-            int count = 4;
-            string filename = "contact.json"; //contact.xxx or group.xxx
-            string format = "json";
+            string typeData = args[0];
+            int count = Convert.ToInt32(args[1]);
+            string filename = args[2]; //contact.xxx or group.xxx
+            string format = args[3];
 
             List<GroupData> groups = new List<GroupData>();
             List<ContactData> contacts = new List<ContactData>();

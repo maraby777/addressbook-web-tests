@@ -127,7 +127,7 @@ namespace addressbook_web_tests.tests
         //    return contacts;
         //}
 
-    [Test, TestCaseSource("ContactDataFromJsonFile")]
+    [Test, TestCaseSource("ContactDataFromXmlFile")]
     public void ContactCreationTest(ContactData contact)
         {
             List<ContactData> oldContacts = app.ContactHelper.GetContactList();
