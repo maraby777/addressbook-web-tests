@@ -27,7 +27,6 @@ namespace addressbook_web_tests.tests
         }
 
         [Test]
-        //[Ignore]
         public void TestDetailContactInformation()
         {
             ContactData fromForm = app.ContactHelper.GetContactInformationFromEditForm(0);
@@ -40,7 +39,9 @@ namespace addressbook_web_tests.tests
                 + fromForm.Title
                 + fromForm.Company
                 + fromForm.Address
-                + fromForm.HomeWorkMobileHome2Phone
+                + fromForm.HomePhone
+                + fromForm.MobilePhone
+                + fromForm.WorkPhone
                 + fromForm.Fax
                 + fromForm.AllEmails
                 + fromForm.Homepage
@@ -50,11 +51,11 @@ namespace addressbook_web_tests.tests
                 + fromForm.HomePhone2
                 + fromForm.Notes;
 
-            string editedDetailFromForm = Regex.Replace(allDetailFromForm, 
-                                            "[0-]|[\\s]|[(\\r\\n)(\\.)]", "")
-                                            .ToLower();
+            string editedDetailFromForm = Regex.Replace(allDetailFromForm,
+                                            "[0-]|[\\s]|[(\\r\\n)(\\.)]", "");
+                                            //.ToLower();
 
-            Assert.AreEqual(editedDetailFromForm, fromDetails.ToLower());
+            Assert.AreEqual(editedDetailFromForm, fromDetails);
 
         }
     }

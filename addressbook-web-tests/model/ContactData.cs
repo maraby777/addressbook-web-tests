@@ -130,8 +130,9 @@ namespace addressbook_web_tests
                 }
                 else
                 {
-                    return (CleanUpDate(ADay) 
-                        + CleanUpDate(AMonth) 
+
+                    return (CleanUpDate(ADay)
+                        + CleanUpDate(char.ToUpper(AMonth[0]) + AMonth.Substring(1))
                         + CleanUpDate(AYear))
                         .Trim();
                 }
