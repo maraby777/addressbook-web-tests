@@ -35,7 +35,7 @@ namespace addressbook_web_tests
             return new ContactData(firstName, lastName)
             {
                 Address = address,
-                HomeMobileWorkPhone = allPhones,
+                HomeWorkMobileHome2Phone = allPhones,
                 AllEmails = allEmails
             };
         }

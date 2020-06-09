@@ -13,7 +13,6 @@ namespace addressbook_web_tests
 
         public ContactData()
         {
-            AllDetails = allDetails;
         }
 
         public ContactData(string firstname)
@@ -85,7 +84,7 @@ namespace addressbook_web_tests
                 {
                     return (CleanUpData(FirstName + Middlename + Lastname
                         + NickName + Title + Company + Address
-                        + HomeMobileWorkPhone
+                        + HomeWorkMobileHome2Phone
                         + AllEmails
                         + BDate
                         + ADate
@@ -143,7 +142,7 @@ namespace addressbook_web_tests
             }
         }
 
-        public string HomeMobileWorkPhone 
+        public string HomeWorkMobileHome2Phone 
         { 
             get 
             {
@@ -155,7 +154,8 @@ namespace addressbook_web_tests
                 {
                     return (CleanUp(HomePhone) 
                         + CleanUp(MobilePhone) 
-                        + CleanUp(WorkPhone))
+                        + CleanUp(WorkPhone)
+                        + CleanUp(HomePhone2))
                         .Trim();
                 }
             } 
@@ -211,7 +211,11 @@ namespace addressbook_web_tests
             {
                 return "";
             }
-            return Regex.Replace(phone, "[ -()]|(\\r\\n)", "" );
+            return phone.Replace(" ", "")
+                .Replace("(", "")
+                .Replace(")", "")
+                .Replace("-", "") + "\r\n";
+
         }
 
         private string CleanUpEmail(string email)

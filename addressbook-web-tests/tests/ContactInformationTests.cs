@@ -20,8 +20,8 @@ namespace addressbook_web_tests.tests
 
             Assert.AreEqual(fromTable, fromForm);
             Assert.AreEqual(fromTable.Address, fromForm.Address.Trim());
-            Assert.AreEqual(fromTable.HomeMobileWorkPhone, 
-                fromForm.HomeMobileWorkPhone+fromForm.HomePhone2);
+            Assert.AreEqual(fromTable.HomeWorkMobileHome2Phone, 
+                fromForm.HomeWorkMobileHome2Phone);
             Assert.AreEqual(fromTable.AllEmails, fromTable.AllEmails);
 
         }
@@ -40,7 +40,7 @@ namespace addressbook_web_tests.tests
                 + fromForm.Title
                 + fromForm.Company
                 + fromForm.Address
-                + fromForm.HomeMobileWorkPhone
+                + fromForm.HomeWorkMobileHome2Phone
                 + fromForm.Fax
                 + fromForm.AllEmails
                 + fromForm.Homepage
