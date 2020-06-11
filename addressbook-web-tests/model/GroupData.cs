@@ -1,12 +1,16 @@
-﻿using System;
+﻿using LinqToDB.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using LinqToDB.Mapping;
+using addressbook_web_tests.model;
 
 namespace addressbook_web_tests
 {
+    [Table(Name = "group_list")]
     public class GroupData : IEquatable<GroupData>, IComparable<GroupData>
     {
         public GroupData(string name)
@@ -18,12 +22,16 @@ namespace addressbook_web_tests
         {
         }
 
+        [Column(Name = "group_name"), NotNull]
         public string Name { get; set; }
-        
+
+        [Column(Name = "group_header"), NotNull]
         public string Header { get; set; }
-        
+
+        [Column(Name = "group_footer"), NotNull]
         public string Footer { get; set; }
-        
+
+        [Column(Name = "group_id"), PrimaryKey, Identity]
         public string Id { get; set; }
 
         public bool Equals(GroupData other)
@@ -57,8 +65,15 @@ namespace addressbook_web_tests
 
         public override string ToString()
         {
-            return "name=" + Name + "\n header=" + Header + "\n footer=" +Footer;
+            return "name=" + Name + "\n header=" + Header + "\n footer=" + Footer;
         }
 
+        public static List<GroupData> GetAll()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from g in db.Groups select g).ToList();
+            } 
+        }
     }
 }

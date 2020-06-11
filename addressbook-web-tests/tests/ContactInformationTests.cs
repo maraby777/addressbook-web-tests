@@ -32,30 +32,9 @@ namespace addressbook_web_tests.tests
             ContactData fromForm = app.ContactHelper.GetContactInformationFromEditForm(0);
             string fromDetails = app.ContactHelper.GetContactInformationFromDetails(0);
 
-            string allDetailFromForm = fromForm.FirstName
-                + fromForm.Middlename
-                + fromForm.Lastname
-                + fromForm.NickName
-                + fromForm.Title
-                + fromForm.Company
-                + fromForm.Address
-                + fromForm.HomePhone
-                + fromForm.MobilePhone
-                + fromForm.WorkPhone
-                + fromForm.Fax
-                + fromForm.AllEmails
-                + fromForm.Homepage
-                + fromForm.BDate
-                + fromForm.ADate
-                + fromForm.Address2
-                + fromForm.HomePhone2
-                + fromForm.Notes;
+            string allDetailFromForm = fromForm.FullName + fromForm.AllDetails;
 
-            string editedDetailFromForm = Regex.Replace(allDetailFromForm,
-                                            "[0-]|[\\s]|[(\\r\\n)(\\.)]", "");
-                                            //.ToLower();
-
-            Assert.AreEqual(editedDetailFromForm, fromDetails);
+            Assert.AreEqual(allDetailFromForm, fromDetails);
 
         }
     }

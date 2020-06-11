@@ -48,9 +48,9 @@ namespace addressbook_web_tests
 
             string contentDetails = driver.FindElement(By.CssSelector("div#content")).Text;
 
+            return contentDetails;
 
-
-            return Regex.Replace(contentDetails, "[0-]|[-()]|[\\s]|(\\r\\n)|(\\.)|(M:)|(H:)|(W:)|(F:)|(P:)|(Anniversary)|(Homepage:)|(Birthday)", "");
+            //return Regex.Replace(contentDetails, "[0-]|[-()]|[\\s]|(\\r\\n)|(\\.)|(M:)|(H:)|(W:)|(F:)|(P:)|(Anniversary)|(Homepage:)|(Birthday)", "");
         }
 
         public ContactHelper OpenContactsDetails(int index)

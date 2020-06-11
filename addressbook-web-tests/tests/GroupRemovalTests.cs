@@ -15,15 +15,15 @@ namespace addressbook_web_tests.tests
     [Test]
     public void GroupRemovalTest()
         {
-            List<GroupData> oldGroups = app.GroupHelper.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
             GroupData toBeRemoved = oldGroups[0];
 
-            app.GroupHelper.Remove(0);
+            app.GroupHelper.Remove(toBeRemoved);
 
             Assert.AreEqual(oldGroups.Count - 1, app.GroupHelper.GetGroupCount());
 
-            List<GroupData> newGroups = app.GroupHelper.GetGroupList();
- 
+            List<GroupData> newGroups = GroupData.GetAll();
+
             oldGroups.RemoveAt(0);
 
             Assert.AreEqual(oldGroups, newGroups);

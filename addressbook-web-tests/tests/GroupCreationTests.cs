@@ -9,6 +9,8 @@ using System.Xml;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using System.Linq;
+using addressbook_web_tests.model;
 
 namespace addressbook_web_tests.tests
 {
@@ -98,6 +100,21 @@ namespace addressbook_web_tests.tests
             newGroups.Sort();
             Assert.AreEqual (oldGroups.Count, newGroups.Count);
          
+        }
+
+        [Test]
+        public void TestDBConnectivity()
+        {
+            DateTime start = DateTime.Now;
+            app.GroupHelper.GetGroupList();
+            DateTime end = DateTime.Now;
+            System.Console.Out.WriteLine("UI= " + end + " - " + start + " = " + end.Subtract(start));
+
+
+            start = DateTime.Now;
+            List<GroupData> fromDb = GroupData.GetAll();
+            end = DateTime.Now;
+            System.Console.Out.WriteLine("DB= " + end + " - " + start + " = " +  end.Subtract(start));
         }
     }
 }

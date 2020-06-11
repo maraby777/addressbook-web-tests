@@ -10,6 +10,11 @@ namespace addressbook_web_tests
         private string allDetails;
         private string bDate;
         private string aDate;
+        private string aDay;
+        private string bDay;
+        private string aMonth;
+        private string bMonth;
+        private string fullName;
 
         public ContactData()
         {
@@ -31,7 +36,8 @@ namespace addressbook_web_tests
         public string Middlename { get; set; }
 
         public string Lastname { get; set; }
-        
+
+
         public string NickName { get; set; }
 
         public string Company { get; set; }
@@ -57,18 +63,111 @@ namespace addressbook_web_tests
         public string Homepage { get; set; }
 
 
-        public string BDay { get; set; }
-        public string BMonth { get; set; }
+        public string BDay
+        {
+            get
+            {
+                if (bDay == null || bDay == "0")
+                {
+                    return "";
+                }
+                else
+                {
+                    return bDay;
+                }
+            }
+            set
+            {
+                bDay = value;
+            }
+        }
+        public string BMonth
+        {
+            get
+            {
+                if (bMonth == null || bMonth == "-")
+                {
+                    return "";
+                }
+                else
+                {
+                    return bMonth;
+                }
+            }
+            set
+            {
+                bMonth = value;
+            }
+        }
+
         public string BYear { get; set; }
 
-        public string ADay { get; set; }
-        public string AMonth { get; set; }
+        public string ADay
+        {
+            get
+            {
+                if (aDay == null || aDay == "0")
+                {
+                    return "";
+                }
+                else 
+                {
+                    return aDay;
+                }
+            }
+            set
+            {
+                aDay = value;
+            }
+        }
+        public string AMonth
+        {
+            get
+            {
+                if (aMonth == null || aMonth == "-")
+                {
+                    return "";
+                }
+                else
+                {
+                    return aMonth;
+                }
+            }
+            set
+            {
+                aMonth = value;
+            }
+        }
+
         public string AYear { get; set; }
 
 
         public string Address2 { get; set; }
 
         public string HomePhone2 { get; set; }
+
+        public string FullName 
+        {
+            get
+            {
+                if (fullName != null)
+                {
+                    return fullName;
+                }
+                else
+                {
+
+                    return AddCaret((CleanUpFullName(FirstName)  
+                        + CleanUpFullName(Middlename)  
+                        + CleanUpFullName(Lastname))
+                        .Trim());
+                }
+            }
+            set
+            {
+                fullName = value;
+            }
+        }
 
         public string Notes { get; set; }
 
@@ -82,13 +181,26 @@ namespace addressbook_web_tests
                 }
                 else
                 {
-                    return (CleanUpData(FirstName + Middlename + Lastname
-                        + NickName + Title + Company + Address
-                        + HomeWorkMobileHome2Phone
-                        + AllEmails
-                        + BDate
-                        + ADate
-                        + Address2 + Notes))
+                    return (AddCaret(NickName)
+                        + AddCaret(Title) 
+                        + AddCaret(Company) 
+                        + AddCaret(AddCaret(Address))
+
+                        + AddCaret(SetHomePhoneLikeOnDetailsPage(HomePhone)
+                            + SetMobilePhoneLikeOnDetailsPage(MobilePhone)
+                            + SetWorkPhoneLikeOnDetailsPage(WorkPhone)
+                            + SetFaxPhoneLikeOnDetailsPage(Fax))
+                        
+                        + AddCaret(Email) + AddCaret(Email2)  + AddCaret(Email3)
+                        + AddCaret(SetHomepageLikeOnDetailsPage(Homepage))
+
+                        + AddCaret(SetBirthdayLikeOnDetailsPage(BDay, BMonth, BYear)
+                                + SetAnniversaryLikeOnDetailsPage(ADay, AMonth, AYear))
+
+                        + AddCaret(AddCaret(Address2))
+                        + AddCaret(SetHomePhone2LikeOnDetailsPage(HomePhone2))
+                        + AddCaret(Notes)
+                        )
                         .Trim();
                 }
             }
@@ -108,10 +220,7 @@ namespace addressbook_web_tests
                 }
                 else
                 {
-                    return (CleanUpDate(BDay) 
-                        + CleanUpDate(BMonth) 
-                        + CleanUpDate(BYear))
-                        .Trim();
+                    return (BDay + BMonth + BYear).Trim();
                 }
             }
             set 
@@ -124,17 +233,14 @@ namespace addressbook_web_tests
         {
             get
             {
-                if (aDate != null)
+                if (aDate != null )
                 {
-                    return bDate;
+                    return aDate;
                 }
                 else
                 {
 
-                    return (CleanUpDate(ADay)
-                        + CleanUpDate(char.ToUpper(AMonth[0]) + AMonth.Substring(1))
-                        + CleanUpDate(AYear))
-                        .Trim();
+                   return (ADay + AMonth + AYear).Trim();
                 }
             }
             set
@@ -188,22 +294,104 @@ namespace addressbook_web_tests
             }
         }
 
-        private string CleanUpData(string data)
+
+        private string SetHomePhoneLikeOnDetailsPage(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return "H: " + phone + "\r\n";
+        }
+
+        private string SetWorkPhoneLikeOnDetailsPage(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return "W: " + phone + "\r\n";
+        }
+
+        private string SetMobilePhoneLikeOnDetailsPage(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return "M: " + phone + "\r\n";
+        }
+        private string SetFaxPhoneLikeOnDetailsPage(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return "F: " + phone + "\r\n";
+        }
+
+        private string SetHomePhone2LikeOnDetailsPage(string phone)
+        {
+            if (phone == null || phone == "")
+            {
+                return "";
+            }
+            return "P: " + phone + "\r\n";
+        }
+
+        //DATE
+        private string SetBirthdayLikeOnDetailsPage(string day, string month, string year)
+        {
+            if (day == "" && month == "" && year == "")
+            {
+                return "";
+            }
+            return "Birthday" + FormateDayForEditePage(day)  + month + " " + year +"\r\n";
+        }
+        private string SetAnniversaryLikeOnDetailsPage(string day, string month, string year)
+        {
+            if (day == "" && month == "" && year == "")
+            {
+                return "";
+            }
+            return "Anniversary" + FormateDayForEditePage(day) + month + " " + year + "\r\n";
+        }
+
+        private string FormateDayForEditePage(string day)
+        {
+            if (day == null || day == "" || day == "0") 
+            {
+                return ""; 
+            }
+            return day + ". ";
+        }
+
+        private string SetHomepageLikeOnDetailsPage(string page)
+        {
+            if (page == null || page == "")
+            {
+                return "";
+            }
+            return "Homepage:" + "\r\n" + page + "\r\n";
+        }
+
+        private string CleanUpFullName(string name)
+        {
+
+            if (name == null || name == "")
+            {
+                return "";
+            }
+            return name + " ";
+        }
+
+        private string AddCaret(string data)
         {
             if (data == null || data == "")
             {
                 return "";
             }
-            return Regex.Replace(data, "[0-]|[\\s]|(\\r\\n)|(\\.)|(Homepage:)|(Birthday )|(Anniversary )", "");
-        }
-
-        private string CleanUpDate(string date)
-        {
-            if (date == null || date == "")
-            {
-                return "";
-            }
-            return Regex.Replace(date, "[0-]|[\\s]|(\\.)|(\\r\\n)", "");
+            return data + "\r\n";
         }
 
         private string CleanUp(string phone)
@@ -228,7 +416,7 @@ namespace addressbook_web_tests
                             return ""; 
                         }
                     }
-                return Regex.Replace(email, "(\\r\\n)", "");
+                return email;
                 //ToDo Check if email addresses are valid
             }
         }
