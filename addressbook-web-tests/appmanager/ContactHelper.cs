@@ -14,7 +14,7 @@ namespace addressbook_web_tests
     public class ContactHelper : HelperBase
     {
         private bool acceptNextAlert = true;
-            
+
         public ContactHelper(ApplicationManager manager) 
             : base(manager)
         {
@@ -38,6 +38,33 @@ namespace addressbook_web_tests
                 HomeWorkMobileHome2Phone = allPhones,
                 AllEmails = allEmails
             };
+        }
+
+        internal void RemoveContactFromGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            ClearGroupFilter();
+            SelectGroup(group.Name);
+            SelectContactToRevove(contact.Id);
+            CommitRemovingContactFromGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
+            manager.Navigator.GoToHomePage();
+        }
+
+        private void CommitRemovingContactFromGroup()
+        {
+            driver.FindElement(By.Name("remove")).Click();
+        }
+
+        private void SelectContactToRevove(string id)
+        {
+            driver.FindElement(By.Id(id)).Click();
+        }
+
+        private void SelectGroup(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText(name);
         }
 
         internal void AddContactToGroup(ContactData contact, GroupData group)
@@ -153,6 +180,24 @@ namespace addressbook_web_tests
             return this;
         }
 
+        internal void IsAnyContact()
+        {
+            int contacts = ContactData.GetAll().Count();
+            if (contacts == 0)
+            {
+                ContactData contact = new ContactData("IsContactPresent_first_name");
+                contact.FirstName = "IsContactPresent_firstname";
+                contact.Middlename = "IsContactPresent_middlename";
+                contact.Lastname = "IsContactPresent_lastname";
+                contact.HomePhone = "IsContactPresent_home";
+                contact.MobilePhone = "IsContactPresent_111222333";
+                contact.Email = "IsContactPresent_test@test.com";
+                contact.NickName = "IsContactPresent_nickname";
+
+                Create(contact);
+            }
+        }
+
         public void ContactPrepare()
         {
             if (IsContactPresent() != true)
@@ -186,7 +231,6 @@ namespace addressbook_web_tests
                 .FindElement(By.TagName("a")).Click();
             return this;
         }
-
 
         public ContactHelper SubmitNewContact()
         {

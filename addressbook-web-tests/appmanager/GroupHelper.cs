@@ -15,10 +15,24 @@ namespace addressbook_web_tests
             : base(manager)
         {
         }
+
+        internal void IsAnyGroup()
+        {
+           int groups = GroupData.GetAll().Count();
+            if (groups == 0)
+            {
+                GroupData group = new GroupData("name_");
+                group.Header = "Header_";
+                group.Footer = "Footer_";
+
+                Create(group);
+            }
+        }
+
         public GroupHelper Remove(GroupData group)
         {
             manager.Navigator.GoToGroupPage();
-            PrepareGroup();
+            GroupPrepare();
             SelectGroup(group.Id);
             RemoveGroup();
             manager.Navigator.GoToGroupPage();
@@ -29,7 +43,7 @@ namespace addressbook_web_tests
         public GroupHelper Remove(int v)
         {
             manager.Navigator.GoToGroupPage();
-            PrepareGroup();
+            GroupPrepare();
             SelectGroup(v);
             RemoveGroup();
             manager.Navigator.GoToGroupPage();
@@ -39,7 +53,7 @@ namespace addressbook_web_tests
         public GroupHelper Modify(int v, GroupData newData)
         {
             manager.Navigator.GoToGroupPage();
-            PrepareGroup();
+            GroupPrepare();
             SelectGroup(v);
             InitGroupModification();
             FillGroupForm(newData);
@@ -63,7 +77,7 @@ namespace addressbook_web_tests
             return this;
         }
 
-        public void PrepareGroup()
+        public void GroupPrepare()
         {
             if (IsGroupPresent() != true)
             {

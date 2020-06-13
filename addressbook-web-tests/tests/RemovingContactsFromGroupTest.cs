@@ -7,23 +7,24 @@ using NUnit.Framework;
 
 namespace addressbook_web_tests.tests
 {
-    public class AddingContactToGroupTests : AuthTestBase
+    public class RemovingContactsFromGroupTest : AuthTestBase
     {
         [Test]
-        public void TestAddingContactToGroup()
+        public void TestRemovingContactFromGroup()
         {
             app.GroupHelper.IsAnyGroup();
             app.ContactHelper.IsAnyContact();
 
             GroupData group = GroupData.GetAll()[0];
-
             List<ContactData> oldList = group.GetContacts();
             ContactData contact = ContactData.GetAll().Except(oldList).First();
 
             app.ContactHelper.AddContactToGroup(contact, group);
 
+            app.ContactHelper.RemoveContactFromGroup(contact, group);
+
             List<ContactData> newList = group.GetContacts();
-            oldList.Add(contact);
+            oldList.Remove(contact);
             newList.Sort();
             oldList.Sort();
             Assert.AreEqual(oldList, newList);
