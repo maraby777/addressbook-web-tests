@@ -1,8 +1,14 @@
-﻿using System;
+﻿using addressbook_web_tests.model;
+using LinqToDB.Mapping;
+using System;
+using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace addressbook_web_tests
 {
+    [Table(Name = "addressbook")]
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhone;
@@ -31,38 +37,58 @@ namespace addressbook_web_tests
             Lastname = lastname;
         }
 
+        [Column(Name = "deprecated")]
+        public string Deprecated { get; set; }
+
+        [Column(Name = "id"), PrimaryKey, Identity]
+        public string Id { get; set; }
+
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
 
+        [Column(Name = "middlename")]
         public string Middlename { get; set; }
 
+        [Column(Name = "lastname")]
         public string Lastname { get; set; }
 
-
+        [Column(Name = "nickname")]
         public string NickName { get; set; }
 
+        [Column(Name = "company")]
         public string Company { get; set; }
 
+        [Column(Name = "title")]
         public string Title { get; set; }
 
+        [Column(Name = "address")]
         public string Address { get; set; }
 
+        [Column(Name = "home")]
         public string HomePhone { get; set; }
 
+        [Column(Name = "mobile")]
         public string MobilePhone { get; set; }
 
+        [Column(Name = "work")]
         public string WorkPhone { get; set; }
 
+        [Column(Name = "fax")]
         public string Fax { get; set; }
 
+        [Column(Name = "email")]
         public string Email { get; set; }
 
+        [Column(Name = "email2")]
         public string Email2 { get; set; }
 
+        [Column(Name = "email3")]
         public string Email3 { get; set; }
 
+        [Column(Name = "homepage")]
         public string Homepage { get; set; }
 
-
+        [Column(Name = "bday")]
         public string BDay
         {
             get
@@ -81,6 +107,8 @@ namespace addressbook_web_tests
                 bDay = value;
             }
         }
+
+        [Column(Name = "bmonth")]
         public string BMonth
         {
             get
@@ -100,8 +128,10 @@ namespace addressbook_web_tests
             }
         }
 
+        [Column(Name = "byear")]
         public string BYear { get; set; }
 
+        [Column(Name = "aday")]
         public string ADay
         {
             get
@@ -120,6 +150,8 @@ namespace addressbook_web_tests
                 aDay = value;
             }
         }
+
+        [Column(Name = "amonth")]
         public string AMonth
         {
             get
@@ -139,14 +171,19 @@ namespace addressbook_web_tests
             }
         }
 
+        [Column(Name = "ayear")]
         public string AYear { get; set; }
 
-
+        [Column(Name = "address2")]
         public string Address2 { get; set; }
 
+        [Column(Name = "phone2")]
         public string HomePhone2 { get; set; }
 
-        public string FullName 
+        [Column(Name = "notes")]
+        public string Notes { get; set; }
+
+        public string FullName
         {
             get
             {
@@ -157,8 +194,8 @@ namespace addressbook_web_tests
                 else
                 {
 
-                    return AddCaret((CleanUpFullName(FirstName)  
-                        + CleanUpFullName(Middlename)  
+                    return AddCaret((CleanUpFullName(FirstName)
+                        + CleanUpFullName(Middlename)
                         + CleanUpFullName(Lastname))
                         .Trim());
                 }
@@ -168,8 +205,6 @@ namespace addressbook_web_tests
                 fullName = value;
             }
         }
-
-        public string Notes { get; set; }
 
         public string AllDetails
         {
@@ -181,10 +216,11 @@ namespace addressbook_web_tests
                 }
                 else
                 {
-                    return (AddCaret(NickName)
+                    return (AddCaret((FullName)
+                        + AddCaret(NickName)
                         + AddCaret(Title) 
                         + AddCaret(Company) 
-                        + AddCaret(AddCaret(Address))
+                        + AddCaret(AddCaret(Address)))
 
                         + AddCaret(SetHomePhoneLikeOnDetailsPage(HomePhone)
                             + SetMobilePhoneLikeOnDetailsPage(MobilePhone)
@@ -294,7 +330,6 @@ namespace addressbook_web_tests
             }
         }
 
-
         private string SetHomePhoneLikeOnDetailsPage(string phone)
         {
             if (phone == null || phone == "")
@@ -321,6 +356,7 @@ namespace addressbook_web_tests
             }
             return "M: " + phone + "\r\n";
         }
+
         private string SetFaxPhoneLikeOnDetailsPage(string phone)
         {
             if (phone == null || phone == "")
@@ -348,6 +384,7 @@ namespace addressbook_web_tests
             }
             return "Birthday" + FormateDayForEditePage(day)  + month + " " + year +"\r\n";
         }
+
         private string SetAnniversaryLikeOnDetailsPage(string day, string month, string year)
         {
             if (day == "" && month == "" && year == "")
@@ -372,7 +409,7 @@ namespace addressbook_web_tests
             {
                 return "";
             }
-            return "Homepage:" + "\r\n" + page + "\r\n";
+            return  "Homepage:" + "\r\n" + page + "\r\n";
         }
 
         private string CleanUpFullName(string name)
@@ -465,6 +502,17 @@ namespace addressbook_web_tests
                 + "\n Address = " + Address
                 + "\n Email = " + Email
                 + "\n Homepage = " + Homepage;
+        }
+
+        public static List<ContactData> GetAll()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+
+                return (from c in db.Contacts
+                        .Where(x => x.Deprecated == "0000-00-00 00:00:00") 
+                        select c).ToList();
+            }
         }
     }
 }

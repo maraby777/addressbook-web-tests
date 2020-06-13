@@ -9,6 +9,7 @@ namespace addressbook_web_tests.tests
     public class TestBase
     {
         protected ApplicationManager app;
+        public static bool PERFORRM_LONG_UI_CHECKS = true;
 
         [SetUp]
         public void SetupApplicationManager()

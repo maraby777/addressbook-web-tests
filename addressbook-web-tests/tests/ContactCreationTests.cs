@@ -9,11 +9,12 @@ using System.Xml;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using addressbook_web_tests.model;
 
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class ContactCreationTests : AuthTestBase
+    public class ContactCreationTests : ContactTestBase
     {
         public static IEnumerable<ContactData> RandomContactpDataProvider()
         {
@@ -127,14 +128,14 @@ namespace addressbook_web_tests.tests
         //    return contacts;
         //}
 
-    [Test, TestCaseSource("ContactDataFromXmlFile")]
-    public void ContactCreationTest(ContactData contact)
+        [Test, TestCaseSource("ContactDataFromJsonFile")]
+        public void ContactCreationTest(ContactData contact)
         {
-            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
 
             app.ContactHelper.Create(contact);
 
-            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Add(contact);
             oldContacts.Sort();
             newContacts.Sort();

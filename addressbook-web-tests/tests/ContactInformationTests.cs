@@ -32,7 +32,7 @@ namespace addressbook_web_tests.tests
             ContactData fromForm = app.ContactHelper.GetContactInformationFromEditForm(0);
             string fromDetails = app.ContactHelper.GetContactInformationFromDetails(0);
 
-            string allDetailFromForm = fromForm.FullName + fromForm.AllDetails;
+            string allDetailFromForm = fromForm.AllDetails;
 
             Assert.AreEqual(allDetailFromForm, fromDetails);
 

@@ -40,25 +40,15 @@ namespace addressbook_web_tests
             };
         }
 
-        public string GetContactInformationFromDetails(int index)
+        internal void AddContactToGroup(ContactData contact, GroupData group)
         {
             manager.Navigator.GoToHomePage();
-            OpenContactsDetails(index);
-
-
-            string contentDetails = driver.FindElement(By.CssSelector("div#content")).Text;
-
-            return contentDetails;
-
-            //return Regex.Replace(contentDetails, "[0-]|[-()]|[\\s]|(\\r\\n)|(\\.)|(M:)|(H:)|(W:)|(F:)|(P:)|(Anniversary)|(Homepage:)|(Birthday)", "");
-        }
-
-        public ContactHelper OpenContactsDetails(int index)
-        {
-            driver.FindElements(By.Name("entry"))[index]
-                .FindElements(By.TagName("td"))[6]
-                .FindElement(By.TagName("a")).Click();
-            return this;
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
         }
 
         public ContactData GetContactInformationFromEditForm(int index)
@@ -136,13 +126,15 @@ namespace addressbook_web_tests
             return this;
         }
 
-        public ContactHelper Remove(int v)
+        public ContactHelper Remove(ContactData contact)
         {
             manager.Navigator.GoToHomePage();
-
             ContactPrepare();
-            InitContactModification(v);
+            SelectContact(contact.Id);
             RemoveContact();
+            manager.Navigator.GoToHomePage();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+               .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
             return this;
         }
 
@@ -155,6 +147,8 @@ namespace addressbook_web_tests
             //EditContact();
             FillContactForm(newData);
             SubmitContactModification();
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10))
+                .Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count() > 0);
             manager.Navigator.GoToHomePage();
             return this;
         }
@@ -273,12 +267,53 @@ namespace addressbook_web_tests
                 foreach (IWebElement element in elements)
                 {
                     IList<IWebElement> cells = element.FindElements(By.TagName("td"));
-                    contactCache.Add(new ContactData(cells[1].Text, cells[2].Text));
+                    contactCache.Add(new ContactData(cells[2].Text, cells[1].Text));
                 }
             }
             return new List<ContactData>(contactCache);
 
 
+        }
+
+        private void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        private void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        private void SelectContact(string contactId)
+        {
+            driver.FindElement(By.Id(contactId)).Click();
+        }
+
+        private void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
+
+        public string GetContactInformationFromDetails(int index)
+        {
+            manager.Navigator.GoToHomePage();
+            OpenContactsDetails(index);
+
+
+            string contentDetails = driver.FindElement(By.CssSelector("div#content")).Text;
+
+            return contentDetails;
+
+            //return Regex.Replace(contentDetails, "[0-]|[-()]|[\\s]|(\\r\\n)|(\\.)|(M:)|(H:)|(W:)|(F:)|(P:)|(Anniversary)|(Homepage:)|(Birthday)", "");
+        }
+
+        public ContactHelper OpenContactsDetails(int index)
+        {
+            driver.FindElements(By.Name("entry"))[index]
+                .FindElements(By.TagName("td"))[6]
+                .FindElement(By.TagName("a")).Click();
+            return this;
         }
 
         public int GetNumberOfResults()

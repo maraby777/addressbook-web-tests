@@ -15,7 +15,7 @@ using addressbook_web_tests.model;
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class GroupCreationTests : AuthTestBase
+    public class GroupCreationTests : GroupTestBase
     {
         public static IEnumerable<GroupData> RandomGroupDataProvider()
         {
@@ -88,13 +88,13 @@ namespace addressbook_web_tests.tests
         [Test, TestCaseSource("GroupDataFromExcelFile")]
         public void GroupCreationTest(GroupData group)
         {
-            List<GroupData> oldGroups = app.GroupHelper.GetGroupList();
+            List<GroupData> oldGroups = GroupData.GetAll();
 
             app.GroupHelper.Create(group);
 
             Assert.AreEqual(oldGroups.Count + 1 , app.GroupHelper.GetGroupCount());
 
-            List<GroupData> newGroups = app.GroupHelper.GetGroupList();
+            List<GroupData> newGroups = GroupData.GetAll();
             oldGroups.Add(group);
             oldGroups.Sort();
             newGroups.Sort();
@@ -105,16 +105,20 @@ namespace addressbook_web_tests.tests
         [Test]
         public void TestDBConnectivity()
         {
-            DateTime start = DateTime.Now;
-            app.GroupHelper.GetGroupList();
-            DateTime end = DateTime.Now;
-            System.Console.Out.WriteLine("UI= " + end + " - " + start + " = " + end.Subtract(start));
+            foreach (ContactData contact in ContactData.GetAll())
+            {
+                System.Console.Out.WriteLine(contact.Deprecated);
+            }
+            //DateTime start = DateTime.Now;
+            //app.GroupHelper.GetGroupList();
+            //DateTime end = DateTime.Now;
+            //System.Console.Out.WriteLine("UI= " + end + " - " + start + " = " + end.Subtract(start));
 
 
-            start = DateTime.Now;
-            List<GroupData> fromDb = GroupData.GetAll();
-            end = DateTime.Now;
-            System.Console.Out.WriteLine("DB= " + end + " - " + start + " = " +  end.Subtract(start));
+            //start = DateTime.Now;
+            //List<GroupData> fromDb = GroupData.GetAll();
+            //end = DateTime.Now;
+            //System.Console.Out.WriteLine("DB= " + end + " - " + start + " = " +  end.Subtract(start));
         }
     }
 }

@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace addressbook_web_tests.tests
 {   
     [TestFixture]
-    public class ContactModificationTests : AuthTestBase
+    public class ContactModificationTests : ContactTestBase
     {
         [Test]
         public void ContactModifyTest()
@@ -22,11 +22,11 @@ namespace addressbook_web_tests.tests
             newData.Email = "test@test.com_modify";
             newData.NickName = "nickname_modify";
 
-            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+            List<ContactData> oldContacts = ContactData.GetAll();
 
             app.ContactHelper.Modify(0, newData);
 
-            List<ContactData> newContacts = app.ContactHelper.GetContactList();
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.Sort();
             newContacts.Sort();
         }

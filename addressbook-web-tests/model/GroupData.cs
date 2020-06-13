@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LinqToDB.Mapping;
 using addressbook_web_tests.model;
 
 namespace addressbook_web_tests
@@ -74,6 +73,19 @@ namespace addressbook_web_tests
             {
                 return (from g in db.Groups select g).ToList();
             } 
+        }
+
+        public List<ContactData> GetContacts()
+        {
+            using (AddressBookDB db = new AddressBookDB())
+            {
+                return (from c in db.Contacts 
+                        from gcrelation in db.GCRelation
+                        .Where( p => p.GroupId == Id 
+                                && p.ContactId == c.Id 
+                                && c.Deprecated == "0000-00-00 00:00:00")
+                        select c).ToList();
+            }
         }
     }
 }

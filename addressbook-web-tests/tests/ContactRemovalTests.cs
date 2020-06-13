@@ -12,16 +12,19 @@ using OpenQA.Selenium.Support.UI;
 namespace addressbook_web_tests.tests
 {
     [TestFixture]
-    public class ContactRemovalTests : AuthTestBase
+    public class ContactRemovalTests : ContactTestBase
     {
         [Test]
         public void TheRemoveContactTest()
         {
-            List<ContactData> oldContacts = app.ContactHelper.GetContactList();
+            app.ContactHelper.ContactPrepare();
 
-            app.ContactHelper.Remove(0);
-            List<ContactData> newContacts = app.ContactHelper.GetContactList();
-            
+            List<ContactData> oldContacts = ContactData.GetAll();
+            ContactData toBeRemovalContact = oldContacts[0];
+
+            app.ContactHelper.Remove(toBeRemovalContact);
+           
+            List<ContactData> newContacts = ContactData.GetAll();
             oldContacts.RemoveAt(0);
             Assert.AreEqual(oldContacts, newContacts);       
         }
